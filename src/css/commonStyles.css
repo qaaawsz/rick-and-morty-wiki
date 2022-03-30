@@ -13,3 +13,15 @@
 .text-light-secondary {
     color: var(--text-secondary)
 }
+
+.dead {
+    background-color: var(--status-false);
+}
+
+.alive {
+    background-color: var(--status-true);
+}
+
+.unknown {
+    background-color: var(--status-unknown);
+}
