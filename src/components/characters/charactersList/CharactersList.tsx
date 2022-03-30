@@ -3,7 +3,6 @@ import {ICharacterCard} from '../../../services/types'
 import CharacterCard from './characterCard/CharacterCard'
 
 const CharactersList: React.FC<{ characters: any[] }> = ({characters}) => {
-    console.log(characters)
     return (
         <>
             <div className="container-fluid p-4">

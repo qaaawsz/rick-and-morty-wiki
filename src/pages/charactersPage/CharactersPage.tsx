@@ -18,8 +18,6 @@ const CharactersPage: React.FC = () => {
             })
     }, [page])
 
-        console.log(paginationInfo)
-
     if(!characters.length) return <p>Loading</p>
 
     return (
@@ -36,7 +34,7 @@ const CharactersPage: React.FC = () => {
                     </div>
                     <div className="col col-xl-10 bg-secondary">
                         <CharactersList characters={characters}/>
-                        <Pagination itemsPerPage={20} />
+                        <Pagination />
                     </div>
                 </div>
                 </div>
