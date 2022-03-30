@@ -6,17 +6,15 @@ import Heading from './heading/Heading'
 const Header: React.FC<{ theme: string, setTheme: Function }> = ({theme, setTheme}) => {
     return (
         <>
-            <div className="header container-fluid p-3">
-                <div className="d-flex justify-content-between align-items-center">
-                    <div>
-                        <Heading/>
-                    </div>
-                    <nav>
-                        <Navigation/>
-                        <ModeSwitcher theme={theme} setTheme={setTheme}/>
-                    </nav>
+            <header className="header d-flex justify-content-between align-items-center p-3">
+                <div>
+                    <Heading/>
                 </div>
-            </div>
+                <nav>
+                    <Navigation/>
+                    <ModeSwitcher theme={theme} setTheme={setTheme}/>
+                </nav>
+            </header>
         </>
     )
 }

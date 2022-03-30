@@ -2,11 +2,8 @@ import {Link} from 'react-router-dom'
 import React from 'react'
 import useWindowSize from '../../hooks/useWindowSize'
 import {mobileFriendlyLayout} from '../../../services/globalVariables'
+import {link} from '../../../services/types'
 
-type link = {
-    to: string,
-    link: string | JSX.Element,
-}
 
 const Navigation: React.FC = () => {
     const {screenSize} = useWindowSize()

@@ -1,0 +1,15 @@
+.text-regular {
+    font-family: Montserrat-Regular, sans-serif;
+}
+
+.text-semi-bold {
+    font-family: Montserrat-SemiBold, sans-serif;
+}
+
+.text-bold {
+    font-family: Montserrat-Bold, sans-serif;
+}
+
+.text-light-secondary {
+    color: var(--text-secondary)
+}

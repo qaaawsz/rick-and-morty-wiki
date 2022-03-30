@@ -10,6 +10,8 @@ const App: React.FC = () => {
     const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     const [theme, setTheme] = useLocalStorage('theme', defaultDark ? 'dark' : 'light')
 
+    console.log('GLOBAL RERENDER')
+
     return (
         <div className="app" data-theme={theme}>
             <Router>

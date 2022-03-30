@@ -1,0 +1,39 @@
+.app {
+    color: var(--text-primary);
+    background: var(--background-primary);
+    transition: all .5s;
+    font-family: Montserrat-Regular, sans-serif;
+    letter-spacing: -0.1px;
+}
+
+.header {
+    background: var(--background-secondary);
+}
+
+.characterCard {
+    border: 1px solid var(--text-secondary);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.circle {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.dead {
+    background-color: var(--status-false);
+}
+
+.alive {
+    background-color: var(--status-true);
+}
+
+.unknown {
+    background-color: var(--status-unknown);
+}
+
+/*box shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px*/
+/*    color: var(--text-hover-dark)
+*/

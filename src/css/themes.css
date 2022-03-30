@@ -1,0 +1,20 @@
+:root {
+    --background-primary: #FFFFFFFF;
+    --background-secondary: #f5f5f5;
+    --text-primary: #000000FF;
+    --text-secondary: #0B5ED7FF;
+
+    --status-true: rgb(85, 204, 68);
+    --status-false: rgb(214, 61, 46);
+    --status-unknown: rgb(158, 158, 158);
+
+    --text-hover-dark: rgb(255, 152, 0);
+    --text-hover-light: #0b5ed7;
+}
+
+[data-theme='dark'] {
+    --background-primary: #24282FFF;
+    --background-secondary: #3C3E44FF;
+    --text-primary: #FFFFFFFF;
+    --text-secondary: #9E9E9EFF;
+}
