@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {ICharacterCard} from '../../../services/types'
 import CharacterCard from './characterCard/CharacterCard'
 

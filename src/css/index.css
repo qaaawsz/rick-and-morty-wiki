@@ -10,7 +10,7 @@
     background: var(--background-secondary);
 }
 
-.characterCard {
+.basicCard {
     border: 1px solid var(--text-secondary);
     border-radius: 10px;
     overflow: hidden;

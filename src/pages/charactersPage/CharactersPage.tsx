@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {fetchCharacters, searchByName} from '../../services/apiHandler'
+import {charactersFilterSearch, fetchCharacters, searchByName} from '../../services/apiHandler'
 import CharactersList from '../../components/characters/charactersList/CharactersList'
 import SearchBar from '../../components/searchBar/SearchBar'
 import Filters from '../../components/filters/Filters'
@@ -10,6 +10,8 @@ const CharactersPage: React.FC = () => {
     const [search, setSearch] = useState<string>('')
     const [characters, setCharacters] = useState<any[]>([])
     const [paginationInfo, setPaginationInfo] = useState<any>()
+    const [paginationFilter, setPaginationFilter] = useState<string>('')
+    const [paginationFilterType, setPaginationFilterType] = useState<string>('')
 
     useEffect(() => {
         fetchCharacters(page)
@@ -28,6 +30,14 @@ const CharactersPage: React.FC = () => {
             })
     }, [search])
 
+    useEffect(() => {
+        charactersFilterSearch(paginationFilterType, paginationFilter)
+            .then(res => {
+                setCharacters(res.results)
+                setPaginationInfo(res.info)
+            })
+    }, [paginationFilter])
+
     if (!characters.length) return <p>Loading</p>
 
     return (
@@ -39,12 +49,12 @@ const CharactersPage: React.FC = () => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12 col-xl-2 bg-info">
-                        <Filters/>
+                    <div className="col-12 col-xl-2">
+                        <Filters setPaginationFilterType={setPaginationFilterType} setPaginationFilter={setPaginationFilter}/>
                     </div>
                     <div className="col col-xl-10">
                         <CharactersList characters={characters}/>
-                        <Pagination page={page} setPage={setPage} paginationInfo={paginationInfo}/>
+                        <Pagination page={page} setPage={setPage} paginationInfo={paginationInfo} />
                     </div>
                 </div>
             </div>

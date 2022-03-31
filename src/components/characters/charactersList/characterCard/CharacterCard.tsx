@@ -29,7 +29,7 @@ const CharacterCard: React.FC<ICharacterCard> = ({
     return (
         <>
             <div className="col-12 col-xl-6 p-3">
-                <div className="characterCard row gx-0">
+                <div className="basicCard row gx-0">
                     <div style={{background: `url(${image})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}} className="col-4"/>
                     <div className="col-8 p-3">
                         <h4>{name}</h4>
