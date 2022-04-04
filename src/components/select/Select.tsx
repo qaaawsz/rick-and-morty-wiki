@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Select: React.FC<{ episodes: number, selectedNumber: number, setSelectedNumber: Function }> =
-    ({episodes, selectedNumber, setSelectedNumber}) => {
+const Select: React.FC<{ amount: number, picked: number, setPicked: Function }> =
+    ({amount, picked, setPicked}) => {
 
         const episodesList = () => {
             const resultsArr = []
-            for (let i = 1; i <= episodes; i++) {
+            for (let i = 1; i <= amount; i++) {
                 resultsArr.push(<option key={i} value={i}>{i}</option>)
             }
             return resultsArr
@@ -13,7 +13,7 @@ const Select: React.FC<{ episodes: number, selectedNumber: number, setSelectedNu
 
         return (
             <>
-                <select value={selectedNumber} onChange={(e) => setSelectedNumber(e.target.value)}
+                <select value={picked} onChange={(e) => setPicked(e.target.value)}
                         className="form-select" aria-label="Default select example">
                     {episodesList()}
                 </select>

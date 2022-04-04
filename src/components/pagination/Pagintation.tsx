@@ -1,17 +1,13 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import ReactPaginate from 'react-paginate'
 
 interface IPagination {
     page: number
-    setPage: Function
+    changePage: Function
     paginationInfo: any
 }
 
-const Pagination: React.FC<IPagination> = ({page, setPage, paginationInfo}) => {
-
-    const changePage = (page: any) => {
-        setPage(page.selected + 1)
-    }
+const Pagination: React.FC<IPagination> = ({page, changePage, paginationInfo}) => {
 
     return (
         <>

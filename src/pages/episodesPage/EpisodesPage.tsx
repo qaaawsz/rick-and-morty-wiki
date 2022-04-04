@@ -1,37 +1,23 @@
-import React, {useEffect, useState} from 'react'
-import {fetchEpisodeCharacters, fetchEpisodes, fetchSelectedEpisode} from '../../services/apiHandler'
+import React, {useEffect} from 'react'
 import CharactersList from '../../components/characters/charactersList/CharactersList'
 import Select from '../../components/select/Select'
 
-const EpisodesPage: React.FC = () => {
+interface IEpisodesPage {
+    selectedEpisode: any
+    episodesAmount: number
+    currentEpisodeNumber: number
+    setCurrentEpisodeNumber: Function
+    characters: any[]
 
-    const [episodes, setEpisodes] = useState<number>(0)
-    const [selectedNumber, setSelectedNumber] = useState<number>(1)
-    const [selectedEpisode, setSelectedEpisode] = useState<any>()
-    const [characters, setCharacters] = useState<any[]>([])
+    setOpenedPage: Function
+}
 
-    useEffect(() => {
-        fetchEpisodes()
-            .then(res => {
-                setEpisodes(res.info.count)
-            })
-    }, [])
+const EpisodesPage: React.FC<IEpisodesPage> =
+    ({selectedEpisode, episodesAmount, currentEpisodeNumber, setCurrentEpisodeNumber, characters, setOpenedPage }) => {
 
-    useEffect(() => {
-        fetchSelectedEpisode(selectedNumber)
-            .then(json => {
-                setSelectedEpisode(json)
-            })
-    }, [selectedNumber])
-
-    useEffect(() => {
-        if (selectedEpisode) {
-            fetchEpisodeCharacters(selectedEpisode.characters)
-                .then(json => {
-                    setCharacters(json)
-                })
-        }
-    }, [selectedEpisode])
+        useEffect(() => {
+            setOpenedPage('episodes')
+        }, [])
 
     if (!selectedEpisode) return <p>Loading</p>
 
@@ -50,8 +36,8 @@ const EpisodesPage: React.FC = () => {
                     </div>
                     <div className="col-12 col-lg-2">
                         <p>Choose episode:</p>
-                        <Select episodes={episodes} selectedNumber={selectedNumber}
-                                setSelectedNumber={setSelectedNumber}/>
+                        <Select amount={episodesAmount} picked={currentEpisodeNumber}
+                                setPicked={setCurrentEpisodeNumber}/>
                     </div>
                     <div className="col-12 col-lg-10">
                         <p className="fs-4 mb-0 ms-4 ps-5">
