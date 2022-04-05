@@ -10,7 +10,7 @@ export const fetchCharacters = async (pageNumber: number) => {
     }
 }
 
-export const fetchBySearch = async (page: number, search: string) => {
+export const fetchCharactersBySearch = async (page: number, search: string) => {
     try {
         const response = await fetch(API + `character/?page=${page}&name=${search}`)
         const data = await response.json()
@@ -20,28 +20,7 @@ export const fetchBySearch = async (page: number, search: string) => {
     }
 }
 
-
-export const fetchFirstSeenIn = async (request: string) => {
-    try {
-        const response = await fetch(request)
-        const data = await response.json()
-        return data
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-export const searchByName = async (name: string) => {
-    try {
-        const response = await fetch(API + `character/?name=${name}`)
-        const data = await response.json()
-        return data
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-export const charactersFilterSearch = async (page: number, filterType: string, filter: string) => {
+export const fetchCharactersByFilters = async (page: number, filterType: string, filter: string) => {
     try {
         const request = API + `character/?page=${page}&${filterType}=${filter}`.toLowerCase()
         const response = await fetch(request)
@@ -52,12 +31,15 @@ export const charactersFilterSearch = async (page: number, filterType: string, f
     }
 }
 
-/*
-const errorsHandler = (response: any) => {
-    if (!response.ok) throw Error(response.statusText)
-    return response
+export const fetchFirstSeenIn = async (request: string) => {
+    try {
+        const response = await fetch(request)
+        const data = await response.json()
+        return data
+    } catch (e) {
+        console.log(e)
+    }
 }
- */
 
 export const fetchInstanceCharacters = async (characters: any[]) => {
     const arrayOfPromises = characters.map((character) => fetch(character))

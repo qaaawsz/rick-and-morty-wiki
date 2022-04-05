@@ -6,9 +6,12 @@ import LocationsPage from './pages/locationsPage/LocationsPage'
 import Header from './components/header/Header'
 import useLocalStorage from 'use-local-storage'
 import {
-    charactersFilterSearch, fetchBySearch,
-    fetchCharacters, fetchInstanceCharacters, fetchInstances, fetchSelectedInstance,
-    searchByName
+    fetchCharacters,
+    fetchCharactersByFilters,
+    fetchCharactersBySearch,
+    fetchInstanceCharacters,
+    fetchInstances,
+    fetchSelectedInstance,
 } from './services/apiHandler'
 
 const App: React.FC = () => {
@@ -38,103 +41,97 @@ const App: React.FC = () => {
         setCurrentPage(page.selected + 1)
     }
 
-    // fetches new page of characters each time page is changed
+    // Fetches new page of paginated characters according to set filters(search, filter, none) each time page is changed
     useEffect(() => {
-        if (currentPage && search) {
-            fetchBySearch(currentPage, search)
-                .then(json => {
-                    setCharacters(json.results)
-                    setPaginationInfo(json.info)
-                })
-        } else if (paginationFilter && paginationFilterType) {
-            charactersFilterSearch(currentPage, paginationFilterType, paginationFilter)
-                .then(res => {
-                    setCharacters(res.results)
-                    setPaginationInfo(res.info)
-                })
-        } else {
-            fetchCharacters(currentPage)
-                .then(json => {
-                    setCharacters(json.results)
-                    setPaginationInfo(json.info)
-                })
-        }
+        (async () => {
+            setLoading(true)
+            let response
+
+            if (currentPage && search) {
+                response = await fetchCharactersBySearch(currentPage, search)
+            } else if (paginationFilter && paginationFilterType) {
+                response = await fetchCharactersByFilters(currentPage, paginationFilterType, paginationFilter)
+            } else {
+                response = await fetchCharacters(currentPage)
+            }
+
+            setCharacters(response.results)
+            setPaginationInfo(response.info)
+            setLoading(false)
+        })()
     }, [currentPage])
 
-    // resets page to 1 and searches for characters according to search bar at the top. Uses debouncing with 500ms timeout
+    // Text paginated search. Uses debouncing with 500ms timeout
     useEffect(() => {
+        setLoading(true)
         let searchTimeout = setTimeout(() => {
             setCurrentPage(1)
             setPaginationFilter('')
             setPaginationFilterType('')
-            searchByName(search)
+            fetchCharactersBySearch(1, search)
                 .then(json => {
                     setCharacters(json.results)
                     setPaginationInfo(json.info)
                 })
+            setLoading(false)
         }, 500)
 
         return () => {
             clearTimeout(searchTimeout)
         }
-
     }, [search])
 
-    // filters search
+    // Paginated search related to filters
     useEffect(() => {
-        if (paginationFilter && paginationFilterType) {
-            setCurrentPage(1)
-            charactersFilterSearch(1, paginationFilterType, paginationFilter)
-                .then(res => {
-                    setCharacters(res.results)
-                    setPaginationInfo(res.info)
-                })
-        }
+        (async () => {
+            setLoading(true)
+            if (paginationFilter && paginationFilterType) {
+                setCurrentPage(1)
+                const paginatedFilterResponse = await fetchCharactersByFilters(1, paginationFilterType, paginationFilter)
+                setCharacters(paginatedFilterResponse.results)
+                setPaginationInfo(paginatedFilterResponse.info)
+            }
+            setLoading(false)
+        })()
     }, [paginationFilter])
 
-    // fetch episodes and locations total count. Should be used only once, memoize later
+    // fetch episodes and locations total count. Works only once
     useEffect(() => {
-        fetchInstances('episode')
-            .then(res => {
-                setEpisodesAmount(res.info.count)
-            })
-        fetchInstances('location')
-            .then(res => {
-                setLocationsAmount(res.info.count)
-            })
+        const fetch = async (instanceType: string, setFn: Function) => {
+            setLoading(true)
+            const response = await fetchInstances(instanceType)
+            setFn(response.info.count)
+            setLoading(false)
+        }
+
+        fetch('episode', setEpisodesAmount)
+        fetch('location', setLocationsAmount)
+
     }, [])
 
-    // fetch selected episode or location info, or characters
+    // fetch selected episode or location info and its characters, or paginated characters
     useEffect(() => {
-        setCurrentPage(1)
-        if (openedPage !== 'characters') {
-            const instanceToFetch = openedPage === 'locations' ? currentLocationNumber : currentEpisodeNumber
+        (async () => {
+            setLoading(true)
+            if (openedPage !== 'characters') {
+                const instanceToFetch = openedPage === 'locations' ? currentLocationNumber : currentEpisodeNumber
 
-            fetchSelectedInstance(instanceToFetch, openedPage)
-                .then(json => {
-                    setData(json)
-                })
-        } else {
-            fetchCharacters(currentPage)
-                .then(json => {
-                    setCharacters(json.results)
-                    setPaginationInfo(json.info)
-                })
-        }
+                const instanceResponce = await fetchSelectedInstance(instanceToFetch, openedPage)
+                setData(instanceResponce)
 
+                const instancesToFetch = openedPage === 'locations' ? instanceResponce.residents : instanceResponce.characters
+                const charactersResponse = await fetchInstanceCharacters(instancesToFetch)
+                setCharacters(charactersResponse)
+
+            } else {
+                setCurrentPage(1)
+                const paginatedCharactersResponse = await fetchCharacters(1)
+                setCharacters(paginatedCharactersResponse.results)
+                setPaginationInfo(paginatedCharactersResponse.info)
+            }
+            setLoading(false)
+        })()
     }, [openedPage, currentEpisodeNumber, currentLocationNumber])
-
-    // fetch all characters of episode or location
-    useEffect(() => {
-        if (openedPage !== 'characters') {
-            const instancesToFetch = openedPage === 'locations' ? data.residents : data.characters
-
-            fetchInstanceCharacters(instancesToFetch)
-                .then(json => {
-                    setCharacters(json)
-                })
-        }
-    }, [data])
 
     return (
         <div className="app" data-theme={theme}>
@@ -143,7 +140,6 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path="/" element={
                         <CharactersPage
-                            loading={loading}
                             search={search}
                             setSearch={setSearch}
                             page={currentPage}
@@ -153,6 +149,8 @@ const App: React.FC = () => {
                             setPaginationFilterType={setPaginationFilterType}
                             setPaginationFilter={setPaginationFilter}
                             setOpenedPage={setOpenedPage}
+                            loading={loading}
+                            error={error}
                         />
                     }/>
                     <Route path="/locations" element={
@@ -163,6 +161,8 @@ const App: React.FC = () => {
                             setCurrentLocationNumber={setCurrentLocationNumber}
                             characters={characters}
                             setOpenedPage={setOpenedPage}
+                            loading={loading}
+                            error={error}
                         />
                     }/>
                     <Route path="/episodes" element={
@@ -173,6 +173,8 @@ const App: React.FC = () => {
                             setCurrentEpisodeNumber={setCurrentEpisodeNumber}
                             characters={characters}
                             setOpenedPage={setOpenedPage}
+                            loading={loading}
+                            error={error}
                         />
                     }/>
                 </Routes>

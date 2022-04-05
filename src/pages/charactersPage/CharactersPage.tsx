@@ -5,7 +5,6 @@ import Filters from '../../components/filters/Filters'
 import Pagination from '../../components/pagination/Pagintation'
 
 interface ICharactersPage {
-    loading: boolean
     search: string
     setSearch: Function
     page: number
@@ -18,11 +17,12 @@ interface ICharactersPage {
     setPaginationFilter: Function
 
     setOpenedPage: Function
+    loading: boolean
+    error: string
 }
 
 const CharactersPage: React.FC<ICharactersPage> =
     ({
-         loading,
          search,
          setSearch,
          page,
@@ -31,15 +31,14 @@ const CharactersPage: React.FC<ICharactersPage> =
          characters,
          setPaginationFilterType,
          setPaginationFilter,
-
          setOpenedPage,
+         loading,
+         error,
      }) => {
 
         useEffect(() => {
             setOpenedPage('characters')
         }, [])
-
-        if (!characters || loading) return <p>Loading</p>
 
         return (
             <>
@@ -55,8 +54,23 @@ const CharactersPage: React.FC<ICharactersPage> =
                                      setPaginationFilter={setPaginationFilter}/>
                         </div>
                         <div className="col col-xl-10">
-                            <CharactersList characters={characters}/>
-                            <Pagination page={page} changePage={changePage} paginationInfo={paginationInfo}/>
+                            {
+                                loading
+                                    ?
+                                    <div className="container-fluid">
+                                        <p className="fs-4 text-center">Characters loading in progress</p>
+                                    </div>
+                                    :
+                                    <>
+                                        <CharactersList characters={characters}/>
+                                        <Pagination
+                                            page={page}
+                                            changePage={changePage}
+                                            paginationInfo={paginationInfo}
+                                        />
+                                    </>
+                            }
+
                         </div>
                     </div>
                 </div>
