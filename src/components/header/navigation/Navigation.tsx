@@ -27,7 +27,8 @@ const Navigation: React.FC = () => {
         <>
             {
                 links.map((link: link) =>
-                    <Link key={link.to} className="text-semi-bold text-light-secondary mx-2 text-decoration-none" to={link.to}>
+                    <Link key={link.to} className="text-semi-bold text-light-secondary mx-2 text-decoration-none"
+                          to={link.to}>
                         {link.link}
                     </Link>
                 )

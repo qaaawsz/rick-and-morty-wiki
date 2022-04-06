@@ -4,22 +4,53 @@
     transition: all .5s;
     font-family: Montserrat-Regular, sans-serif;
     letter-spacing: -0.1px;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .header {
     background: var(--background-secondary);
 }
-
+.cardWrapper {
+    width: 600px;
+}
 .basicCard {
+    height: 300px;
+    width: 600px;
     border: 1px solid var(--text-secondary);
     border-radius: 10px;
     overflow: hidden;
+}
+
+.cardImage {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 300px;
+    height: 300px;
 }
 
 .circle {
     width: 9px;
     height: 9px;
     border-radius: 50%;
+}
+
+.searchBox {
+    width: 50%;
+}
+
+@media(max-width:768px) {
+    .basicCard {
+        height: 620px;
+        width: 300px;
+    }
+    .cardWrapper {
+        width: 300px;
+    }
+    .searchBox {
+        width: 100%;
+    }
 }
 
 /*box shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px*/

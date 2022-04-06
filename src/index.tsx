@@ -8,10 +8,13 @@ import './css/index.css'
 import './css/fonts.css'
 import './css/commonStyles.css'
 import './css/themes.css'
+import ThemeContextWrapper from './context/ThemeContext'
 
 ReactDOM.render(
     <React.StrictMode>
-        <App/>
+        <ThemeContextWrapper>
+            <App/>
+        </ThemeContextWrapper>
     </React.StrictMode>,
     document.getElementById('root')
 )

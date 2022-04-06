@@ -5,8 +5,9 @@ import CharacterCard from './characterCard/CharacterCard'
 const CharactersList: React.FC<{ characters: any[] }> = ({characters}) => {
     return (
         <>
-            <div className="container-fluid p-4">
-                <div className="row m-4">
+            <div className="container-fluid p-md-4 ps-0 pe-0">
+                <div
+                    className="row d-flex flex-column flex-md-row justify-content-center align-items-center m-md-4 gap-3">
                     {
                         characters.map((character: ICharacterCard) =>
                             <CharacterCard

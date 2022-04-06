@@ -1,39 +1,31 @@
 const API = 'https://rickandmortyapi.com/api/'
 
-export const fetchCharacters = async (pageNumber: number) => {
+export const fetchPaginatedCharacters = async (page: number, search?: string, filterType?: string, filter?: string) => {
     try {
-        const response = await fetch(API + `character/?page=${pageNumber}`)
+        let url
+
+        if (filterType && filter) url = `character/?page=${page}&${filterType}=${filter}`.toLowerCase()
+        else if (search) url = `character/?page=${page}&name=${search}`.toLowerCase()
+        else url = `character/?page=${page}`
+        const response = await fetch(API + url)
+        if (!response.ok) throw new Error(response.statusText)
         const data = await response.json()
+
         return data
     } catch (e) {
         console.log(e)
     }
 }
 
-export const fetchCharactersBySearch = async (page: number, search: string) => {
-    try {
-        const response = await fetch(API + `character/?page=${page}&name=${search}`)
-        const data = await response.json()
-        return data
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-export const fetchCharactersByFilters = async (page: number, filterType: string, filter: string) => {
-    try {
-        const request = API + `character/?page=${page}&${filterType}=${filter}`.toLowerCase()
-        const response = await fetch(request)
-        const data = await response.json()
-        return data
-    } catch (e) {
-        console.log(e)
-    }
+export const setTotalCount = async (instanceType: string, setFn: Function) => {
+    const response = await fetchInstances(instanceType)
+    setFn(response.info.count)
 }
 
 export const fetchFirstSeenIn = async (request: string) => {
     try {
         const response = await fetch(request)
+        if (!response.ok) throw new Error(response.statusText)
         const data = await response.json()
         return data
     } catch (e) {
@@ -43,6 +35,7 @@ export const fetchFirstSeenIn = async (request: string) => {
 
 export const fetchInstanceCharacters = async (characters: any[]) => {
     const arrayOfPromises = characters.map((character) => fetch(character))
+
     const res = []
     for await (let request of arrayOfPromises) {
         const data = await request.json()
