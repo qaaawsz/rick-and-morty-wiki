@@ -23,7 +23,7 @@ const FilterRadio: React.FC<IFilterRadio> =
                     id={`${name}-${id}`}
                     autoComplete="off"
                 />
-                <label className="btn btn-primary m-2" htmlFor={`${name}-${id}`}>{name}</label>
+                <label className="btn btn-primary m-2 p-1" htmlFor={`${name}-${id}`}>{name}</label>
             </>
         )
     }

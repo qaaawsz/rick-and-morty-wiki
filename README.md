@@ -1,14 +1,17 @@
-# Rick and Morty wiki 
+# Rick and Morty Wiki 
 
-This project is a wiki based on television show Rick and Morty. \
-It is based on [Rick and Morty API](https://rickandmortyapi.com/).
+This application is a wiki based on television show Rick and Morty. It uses such \
+technologies as `React`, `Typescript`, `Javascript`, `Bootstrap`. Application \
+main features are **Pagination**, **Routing**, **Theming**, **mobile friendliness**. \
+Application pages:
+#### **Characters**
+Page consists of **filters**, **search bar** and list of **paginated characters**. Characters \
+are rendered dynamically, they depend on page, selected filters or search
+#### **Locations**
+Locations page renders **selected location**, information about it and **related characters**, \
+if they exist
+#### **Episodes**
+Episodes page renders **selected episode**, information about it and **related characters**
 
-## Technologies
-Project uses combination of `React` & `Typescript` as a base \
-UI library that is used in project is `Bootstrap` \
-Other packages that are used: `react-router-dom`, ` react-paginate`, \
-`use-local-storage` for themes switch, `HTML`, `CSS`, 
-
-**A live version of the application can be found [here]()**
-
-***
+[My Github](https://github.com/qaaawsz) \
+[My LinkedIn](https://www.linkedin.com/in/anton-tsitovich/)

@@ -7,6 +7,7 @@ import {fetchPaginatedCharacters} from '../../services/apiHandler'
 
 const CharactersPage: React.FC = () => {
 
+    const [isInitLoad, setIsInitLoad] = useState<boolean>(true)
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [search, setSearch] = useState<string>('')
     const [paginationFilter, setPaginationFilter] = useState<string>('')
@@ -39,6 +40,7 @@ const CharactersPage: React.FC = () => {
     }
 
     const resetFilters = () => {
+        setSearch('')
         setPaginationFilterType('')
         setPaginationFilter('')
         fetchCharacters(1)
@@ -47,24 +49,26 @@ const CharactersPage: React.FC = () => {
     // Fetches new page of paginated characters according to set filters(search, filter, none) each time page is changed
     useEffect(() => {
         fetchCharacters(currentPage, search, paginationFilterType, paginationFilter)
+        setIsInitLoad(false)
     }, [currentPage])
 
     // Paginated search related to filters
     useEffect(() => {
-        fetchCharacters(1, '', paginationFilterType, paginationFilter)
+        if (paginationFilter && paginationFilterType) fetchCharacters(1, '', paginationFilterType, paginationFilter)
     }, [paginationFilter])
 
     // Text paginated search. Uses debouncing with 500ms timeout
     useEffect(() => {
-        setLoading(true)
-        let searchTimeout = setTimeout(() => {
-            (async () => {
-                fetchCharacters(1, search)
-                setSearch('')
-                setLoading(false)
-            })()
-        }, 500)
-
+        let searchTimeout: any
+        if (!isInitLoad) {
+            setLoading(true)
+            searchTimeout = setTimeout(() => {
+                (async () => {
+                    fetchCharacters(1, search)
+                    setLoading(false)
+                })()
+            }, 500)
+        }
         return () => {
             clearTimeout(searchTimeout)
         }
